@@ -1,0 +1,40 @@
+{
+    "name": "arzola/extra-php-extensions",
+    "description": "A Vito plugin to manage extra PHP extensions.",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Oscar Arzola",
+            "email": "os@icode.mx"
+        }
+    ],
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "post-package-install" : [
+            "Arzola\\ExtraPhpExtensions\\Install::run"
+        ]
+    },
+    "require": {
+        "php": "^8.4",
+        "illuminate/support": "^12.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arzola\\ExtraPhpExtensions\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Arzola\\ExtraPhpExtensions\\ExtraPhpExtensionsPluginServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
