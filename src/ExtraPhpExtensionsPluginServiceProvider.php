@@ -2,8 +2,6 @@
 
 namespace Arzola\ExtraPhpExtensions;
 
-use App\Plugins\RegisterServiceType;
-use Illuminate\Console\Command\InstallCommand;
 use Illuminate\Support\ServiceProvider;
 
 class ExtraPhpExtensionsPluginServiceProvider extends ServiceProvider

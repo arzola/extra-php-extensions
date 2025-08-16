@@ -1,6 +1,6 @@
 {
     "name": "arzola/extra-php-extensions",
-    "description": "A Vito plugin to manage extra PHP extensions.",
+    "description": "A Vito plugin to fetch and make available PHP extensions.",
     "type": "library",
     "license": "MIT",
     "version": "1.0.0",
