@@ -16,5 +16,11 @@ class ExtraExtensionsHandler
         Event::listen('service.uninstalled', function (Service $service) {
             // some cleanup logic if needed
         });
+        Event::listen('php.extensions.list', function (Service $service, array $availableExtensions) {
+            return [
+                'service' => $service,
+                'available_extensions' => $service->type_data['available_extensions'] ?? $availableExtensions,
+            ];
+        });
     }
 }
