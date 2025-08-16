@@ -21,19 +21,24 @@ class FetchCommand extends Command
     public function handle(): void
     {
         $this->getPhpServices()->each(function ($php) {
-            $command = "apt-cache search php{$php->version}- | grep -o 'php{$php->version}-[^ ]*' | sed 's/php{$php->version}-//' | sort";
+            $availableCommand = "apt-cache search php{$php->version}- | grep -o 'php{$php->version}-[^ ]*' | sed 's/php{$php->version}-//' | sort";
+            $availableExtensions = $php->server->ssh()->exec($availableCommand, 'extra-php-extensions-log');
 
-            $extensions = $php->server->ssh()->exec($command, 'extra-php-extensions-log');
+            $installedCommand = "dpkg -l | grep 'php{$php->version}-' | awk '{print \$2}' | sed 's/php{$php->version}-//' | sort";
+            $installedExtensions = $php->server->ssh()->exec($installedCommand, 'extra-php-extensions-log');
 
-            if ($extensions) {
-                $extensionsList = array_filter(explode("\n", trim($extensions)));
+            if ($availableExtensions) {
+                $availableList = array_filter(explode("\n", trim($availableExtensions)));
+                $installedList = $installedExtensions ? array_filter(explode("\n", trim($installedExtensions))) : [];
+
+                $notInstalledExtensions = array_diff($availableList, $installedList);
 
                 $typeData = $php->type_data ?? [];
-                $typeData['available_extensions'] = $extensionsList;
+                $typeData['available_extensions'] = array_values($notInstalledExtensions);
 
                 $php->update(['type_data' => $typeData]);
 
-                $this->info("Updated {$php->id} with ".count($extensionsList).' available extensions');
+                $this->info("Updated {$php->id} with ".count($notInstalledExtensions).' available extensions (excluding '.count($installedList).' already installed)');
             }
         });
     }
