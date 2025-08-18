@@ -32,6 +32,9 @@ class UninstallCommand extends Command
 
             try {
                 $php->server->ssh()->exec($command, 'extra-php-extensions-uninstall-log');
+                unset($typeData['available_extensions'])
+                $php->type_data = $typeData;
+                $php->save();
                 $this->info("Uninstalled extensions for service {$php->id}: {$extensionsToUninstall}");
             } catch (SSHError $e) {
                 $this->error("Failed to uninstall extensions for service {$php->id}: {$e->getMessage()}");
