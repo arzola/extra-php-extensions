@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Arzola\ExtraPhpExtensions;
 
 use App\Exceptions\SSHError;
@@ -9,12 +10,12 @@ use Illuminate\Support\Collection;
 
 class UninstallCommand extends Command
 {
-    protected $signature = 'php-extensions:uninstall {service? : The ID of the PHP service to uninstall extensions for}';
+    protected $signature = 'php-extensions:uninstall';
 
-    protected $description = 'Restore PHP extensions for the specified PHP service';
+    protected $description = 'Restore PHP extensions to their default state by uninstalling all available extensions for the specified PHP service.';
 
     /**
-     * Fetch available PHP extensions for the specified PHP service.
+     * Uninstall all available PHP extensions on all PHP services.
      */
     public function handle(): void
     {
@@ -27,11 +28,12 @@ class UninstallCommand extends Command
                 return;
             }
 
-            $extensionsToUninstall = implode(' ', array_map(fn ($ext) => "php{$php->version}-{$ext}", $availableExtensions));
+            $extensionsToUninstall = implode(' ', array_map(fn($ext) => "php{$php->version}-{$ext}", $availableExtensions));
             $command = "sudo apt-get remove -y {$extensionsToUninstall}";
 
             try {
                 $php->server->ssh()->exec($command, 'extra-php-extensions-uninstall-log');
+                // Clear the available extensions from type_data after uninstallation
                 unset($typeData['available_extensions']);
                 $php->type_data = $typeData;
                 $php->save();
@@ -44,14 +46,7 @@ class UninstallCommand extends Command
 
     private function getPhpServices(): Collection
     {
-        $serviceId = $this->argument('service');
-
         $query = Service::where('type', 'php');
-
-        if ($serviceId) {
-            $query->where('id', $serviceId);
-        }
-
         return $query->get();
     }
 }
