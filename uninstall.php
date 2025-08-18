@@ -29,31 +29,41 @@ try {
 
     foreach ($services as $service) {
         $typeData = $service->type_data ?? [];
-        $extensions = $typeData['available_extensions'] ?? [];
+        $availableExtraExtensions = $typeData['available_extensions'] ?? [];
+        $installedExtensions = $typeData['extensions'] ?? [];
 
         echo "Cleaning up extensions for service {$service->id}...\n";
 
+        $extensionsToUninstall = array_intersect($availableExtraExtensions, $installedExtensions);
+
         // Clean up the database
         unset($typeData['available_extensions']);
+        foreach ($extensionsToUninstall as $extension) {
+            $key = array_search($extension, $installedExtensions);
+            if ($key !== false) {
+                unset($installedExtensions[$key]);
+            }
+        }
         $service->type_data = $typeData;
+        $service->type_data['extensions'] = array_values($installedExtensions);
         $service->save();
 
         if (empty($extensions)) {
             continue;
         }
 
-        $extensionsToUninstall = implode(' ', array_map(
+        $extensionsToUninstallString = implode(' ', array_map(
             fn ($ext) => "php{$service->version}-{$ext}",
-            $extensions
+            $extensionsToUninstall
         ));
 
-        $command = "sudo apt-get remove -y {$extensionsToUninstall}";
+        $command = "sudo apt-get remove -y {$extensionsToUninstallString}";
 
         try {
             // Execute SSH command
             $service->server->ssh()->exec($command, 'extra-php-extensions-uninstall-log');
 
-            echo "✓ Uninstalled extensions for service {$service->id}: {$extensionsToUninstall}\n";
+            echo "✓ Uninstalled extensions for service {$service->id}: {$extensionsToUninstallString}\n";
 
         } catch (SSHError $e) {
             echo "✗ Failed to uninstall extensions for service {$service->id}: {$e->getMessage()}\n";
