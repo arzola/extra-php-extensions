@@ -16,7 +16,7 @@
             "@php artisan php-extensions:fetch"
         ],
         "pre-package-uninstall" : [
-            "@php artisan php-extensions:uninstall"
+            "@php uninstall.php"
         ]
     },
     "require": {
