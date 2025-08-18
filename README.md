@@ -39,11 +39,8 @@ php artisan php-extensions:fetch
 # Fetch extensions for a specific service
 php artisan php-extensions:fetch 123
 ```
-### Manual Uninstall
+### Plugin Uninstallation
 
-Use the Artisan command to manually uninstall service extensions:
+When the plugin is uninstalled, it will automatically remove the stored extensions from the services and clean up any related data.
 
-```bash
-# Uninstall extensions for all PHP services this gets called on plugin uninstall
-php artisan php-extensions:uninstall
-```
+See uninstall.php for more details.
