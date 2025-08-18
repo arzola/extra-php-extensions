@@ -14,6 +14,9 @@
         "test": "vendor/bin/phpunit",
         "post-package-install" : [
             "@php artisan php-extensions:fetch"
+        ],
+        "pre-package-uninstall" : [
+            "@php artisan php-extensions:uninstall"
         ]
     },
     "require": {
