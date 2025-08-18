@@ -1,6 +1,6 @@
 {
     "name": "arzola/extra-php-extensions",
-    "description": "A Vito plugin to manage extra PHP extensions.",
+    "description": "A Vito plugin to fetch and make available PHP extensions.",
     "type": "library",
     "license": "MIT",
     "version": "1.0.0",
@@ -13,7 +13,10 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "post-package-install" : [
-            "Arzola\\ExtraPhpExtensions\\Install::run"
+            "@php artisan php-extensions:fetch"
+        ],
+        "pre-package-uninstall" : [
+            "@php artisan php-extensions:uninstall"
         ]
     },
     "require": {
