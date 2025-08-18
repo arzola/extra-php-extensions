@@ -38,3 +38,14 @@ php artisan php-extensions:fetch
 
 # Fetch extensions for a specific service
 php artisan php-extensions:fetch 123
+
+### Manual Uninstall
+
+Use the Artisan command to manually uninstall service extensions:
+
+```bash
+# Fetch extensions for all PHP services
+php artisan php-extensions:uninstall
+
+# Fetch extensions for a specific service
+php artisan php-extensions:uninstall 123

@@ -22,10 +22,10 @@ class FetchCommand extends Command
     {
         $this->getPhpServices()->each(function ($php) {
             $availableCommand = "apt-cache search php{$php->version}- | grep -o 'php{$php->version}-[^ ]*' | sed 's/php{$php->version}-//' | sort";
-            $availableExtensions = $php->server->ssh()->exec($availableCommand, 'extra-php-extensions-log');
+            $availableExtensions = $php->server->ssh()->exec($availableCommand, 'extra-php-extensions-available-log');
 
             $installedCommand = "dpkg -l | grep 'php{$php->version}-' | awk '{print \$2}' | sed 's/php{$php->version}-//' | sort";
-            $installedExtensions = $php->server->ssh()->exec($installedCommand, 'extra-php-extensions-log');
+            $installedExtensions = $php->server->ssh()->exec($installedCommand, 'extra-php-extensions-installed-log');
 
             if ($availableExtensions) {
                 $availableList = array_filter(explode("\n", trim($availableExtensions)));

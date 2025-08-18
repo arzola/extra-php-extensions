@@ -11,10 +11,10 @@ class ExtraExtensionsHandler
     public function run(): void
     {
         Event::listen('service.installed', function (Service $service) {
-            Artisan::call('php-extensions:fetch', ['--service' => $service->id]);
+            Artisan::call('php-extensions:fetch', ['service' => $service->id]);
         });
         Event::listen('service.uninstalled', function (Service $service) {
-            // some cleanup logic if needed
+            Artisan::call('php-extensions:uninstall', ['service' => $service->id]);
         });
         Event::listen('php.extensions.list', function (Service $service, array $availableExtensions) {
             return [
