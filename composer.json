@@ -18,7 +18,7 @@
            "@php artisan php-extensions:fetch",
            "echo 'PHP extensions installed successfully.'"
          ],
-        "post-package-uninstall": [
+        "pre-package-uninstall": [
            "@php artisan config:clear",
            "@php artisan cache:clear",
            "@php artisan php-extensions:uninstall"
