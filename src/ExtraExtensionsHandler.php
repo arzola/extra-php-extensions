@@ -10,19 +10,6 @@ class ExtraExtensionsHandler
 {
     public function run(): void
     {
-        Event::listen('plugins.after.install',function(string $plugin) {
-            \Log::info("Plugin installed: $plugin");
-            if ($plugin === 'arzola/extra-php-extensions') {
-                \Log::info('Fetching available PHP extensions after installing the Extra PHP Extensions plugin.');
-                Artisan::call('php-extensions:fetch');
-            }
-        });
-        Event::listen('plugins.before.uninstall',function(string $plugin) {
-            if ($plugin === 'arzola/extra-php-extensions') {
-                \Log::info('Fetching available PHP extensions after installing the Extra PHP Extensions plugin.');
-                Artisan::call('php-extensions:uninstall');
-            }
-        });
         Event::listen('service.installed', function (Service $service) {
             Artisan::call('php-extensions:fetch', ['service' => $service->id]);
         });

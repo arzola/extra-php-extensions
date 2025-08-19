@@ -11,7 +11,18 @@
         }
     ],
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+         "post-package-install": [
+           "@php artisan config:clear",
+           "@php artisan cache:clear",
+           "@php artisan php-extensions:fetch",
+           "echo 'PHP extensions installed successfully.'"
+         ],
+        "post-package-uninstall": [
+           "@php artisan config:clear",
+           "@php artisan cache:clear",
+           "@php artisan php-extensions:uninstall"
+         ]
     },
     "require": {
         "php": "^8.4",
