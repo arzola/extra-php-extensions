@@ -13,10 +13,10 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "post-package-install" : [
-            "@php artisan php-extensions:fetch"
+            "php artisan php-extensions:fetch"
         ],
         "pre-package-uninstall" : [
-            "@php uninstall.php"
+            "php uninstall.php"
         ]
     },
     "require": {
