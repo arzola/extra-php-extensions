@@ -13,6 +13,7 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "post-package-install" : [
+            "@php artisan plugins:load",
             "@php artisan php-extensions:fetch"
         ],
         "pre-package-uninstall" : [
