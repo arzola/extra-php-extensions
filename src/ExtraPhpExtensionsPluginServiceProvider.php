@@ -10,7 +10,8 @@ class ExtraPhpExtensionsPluginServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                FetchCommand::class
+                FetchCommand::class,
+                UninstallCommand::class,
             ]);
         }
         $this->app->booted(function () {

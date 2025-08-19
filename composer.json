@@ -11,19 +11,7 @@
         }
     ],
     "scripts": {
-        "test": "vendor/bin/phpunit",
-        "post-autoload-dump" : [
-            "echo 'Running post-autoload-dump scripts...'",
-            "@php artisan cache:clear",
-            "@php artisan config:clear",
-            "@php artisan view:clear",
-            "@php artisan route:clear",
-            "Arzola\\ExtraPhpExtensions\\Installer::install()"
-        ],
-        "pre-package-uninstall" : [
-            "echo 'Running pre-package-uninstall scripts...'",
-            "Arzola\\ExtraPhpExtensions\\Installer::uninstall()"
-        ]
+        "test": "vendor/bin/phpunit"
     },
     "require": {
         "php": "^8.4",
