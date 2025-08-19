@@ -20,18 +20,13 @@ class UninstallCommand extends Command
      */
     public function handle(): void
     {
-        \Log::info('Uninstalling PHP extensions for all PHP services');
         $this->getPhpServices()->each(function ($service) {
             $typeData = $service->type_data ?? [];
             $availableExtraExtensions = $typeData['available_extensions'] ?? [];
             $installedExtensions = $typeData['extensions'] ?? [];
 
-            echo "Cleaning up extensions for service {$service->id}...\n";
-            \Log::info("Cleaning up extensions for service {$service->id}...");
-
             $extensionsToUninstall = array_intersect($availableExtraExtensions, $installedExtensions);
 
-            // Clean up the database
             unset($typeData['available_extensions']);
             foreach ($extensionsToUninstall as $extension) {
                 $key = array_search($extension, $installedExtensions);
@@ -54,19 +49,10 @@ class UninstallCommand extends Command
 
             $command = "sudo apt-get remove -y {$extensionsToUninstallString}";
 
-            \Log::info("running $command");
-
             try {
-                // Execute SSH command
                 $service->server->ssh()->exec($command, 'extra-php-extensions-uninstall-log');
-
-                echo "✓ Uninstalled extensions for service {$service->id}: {$extensionsToUninstallString}\n";
-
-                \Log::info("Uninstalled extensions for service {$service->id}: {$extensionsToUninstallString}");
-
             } catch (SSHError $e) {
                 echo "✗ Failed to uninstall extensions for service {$service->id}: {$e->getMessage()}\n";
-                \Log::error("Failed to uninstall extensions for service {$service->id}: {$e->getMessage()}");
             }
         });
     }

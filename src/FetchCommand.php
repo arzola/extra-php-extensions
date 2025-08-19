@@ -20,17 +20,12 @@ class FetchCommand extends Command
      */
     public function handle(): void
     {
-        \Log::info('trying to fetch available PHP extensions during installation');
         $this->getPhpServices()->each(function ($php) {
             $availableCommand = "apt-cache search php{$php->version}- | grep -o 'php{$php->version}-[^ ]*' | sed 's/php{$php->version}-//' | sort";
             $availableExtensions = $php->server->ssh()->exec($availableCommand, 'extra-php-extensions-available-log');
 
-            \Log::info("Available extensions for PHP {$php->version}: {$availableExtensions}");
-
             $installedCommand = "dpkg -l | grep 'php{$php->version}-' | awk '{print \$2}' | sed 's/php{$php->version}-//' | sort";
             $installedExtensions = $php->server->ssh()->exec($installedCommand, 'extra-php-extensions-installed-log');
-
-            \Log::info("Installed extensions for PHP {$php->version}: {$installedExtensions}");
 
             if ($availableExtensions) {
                 $availableList = array_filter(explode("\n", trim($availableExtensions)));
@@ -44,7 +39,6 @@ class FetchCommand extends Command
                 $php->update(['type_data' => $typeData]);
 
                 $this->info("Updated {$php->id} with ".count($notInstalledExtensions).' available extensions (excluding '.count($installedList).' already installed)');
-                \Log::info("Updated {$php->id} with ".count($notInstalledExtensions).' available extensions (excluding '.count($installedList).' already installed)');
             }
         });
     }
