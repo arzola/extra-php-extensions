@@ -21,6 +21,7 @@
             "@php install.php"
         ],
         "pre-package-uninstall" : [
+            "echo 'Running pre-package-uninstall scripts...'",
             "@php uninstall.php"
         ]
     },
