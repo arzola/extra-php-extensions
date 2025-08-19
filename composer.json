@@ -13,6 +13,11 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "post-autoload-dump" : [
+            "echo 'Running post-autoload-dump scripts...'",
+            "@php artisan cache:clear",
+            "@php artisan config:clear",
+            "@php artisan view:clear",
+            "@php artisan route:clear",
             "@php install.php"
         ],
         "pre-package-uninstall" : [
