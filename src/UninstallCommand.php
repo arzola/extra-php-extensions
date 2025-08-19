@@ -37,8 +37,8 @@ class UninstallCommand extends Command
                     unset($installedExtensions[$key]);
                 }
             }
+            $typeData['extensions'] = array_values($installedExtensions);
             $service->type_data = $typeData;
-            $service->type_data['extensions'] = array_values($installedExtensions);
             $service->save();
 
             if (empty($extensions)) {
