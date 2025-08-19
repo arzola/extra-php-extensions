@@ -18,11 +18,11 @@
             "@php artisan config:clear",
             "@php artisan view:clear",
             "@php artisan route:clear",
-            "@php install.php"
+            "Arzola\\ExtraPhpExtensions\\Installer::install()"
         ],
         "pre-package-uninstall" : [
             "echo 'Running pre-package-uninstall scripts...'",
-            "@php uninstall.php"
+            "Arzola\\ExtraPhpExtensions\\Installer::uninstall()"
         ]
     },
     "require": {
