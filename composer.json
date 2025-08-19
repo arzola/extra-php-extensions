@@ -13,15 +13,15 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
          "post-package-install": [
-           "@php artisan config:clear",
-           "@php artisan cache:clear",
-           "@php artisan php-extensions:fetch",
+           "php artisan config:clear",
+           "php artisan cache:clear",
+           "php artisan php-extensions:fetch",
            "echo 'PHP extensions installed successfully.'"
          ],
         "pre-package-uninstall": [
-           "@php artisan config:clear",
-           "@php artisan cache:clear",
-           "@php artisan php-extensions:uninstall"
+           "php artisan config:clear",
+           "php artisan cache:clear",
+           "php artisan php-extensions:uninstall"
          ]
     },
     "require": {
