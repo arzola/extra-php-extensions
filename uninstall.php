@@ -1,6 +1,5 @@
+#!/usr/bin/env php
 <?php
-
-// uninstall.php - Direct cleanup without relying on Artisan commands
 
 require_once __DIR__.'/../../../vendor/autoload.php';
 $app = require_once __DIR__.'/../../../bootstrap/app.php';
