@@ -15,8 +15,7 @@
          "post-package-install": [
            "php artisan config:clear",
            "php artisan cache:clear",
-           "php artisan php-extensions:fetch",
-           "echo 'PHP extensions installed successfully.'"
+           "php artisan php-extensions:fetch"
          ],
         "pre-package-uninstall": [
            "php artisan config:clear",
