@@ -11,6 +11,7 @@ class ExtraExtensionsHandler
     public function run(): void
     {
         Event::listen('plugins.after.install',function(string $plugin) {
+            \Log::info("Plugin installed: $plugin");
             if ($plugin === 'arzola/extra-php-extensions') {
                 \Log::info('Fetching available PHP extensions after installing the Extra PHP Extensions plugin.');
                 Artisan::call('php-extensions:fetch');
