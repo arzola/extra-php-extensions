@@ -12,7 +12,7 @@
     ],
     "scripts": {
         "test": "vendor/bin/phpunit",
-        "post-package-install" : [
+        "post-autoload-dump" : [
             "@php install.php"
         ],
         "pre-package-uninstall" : [
