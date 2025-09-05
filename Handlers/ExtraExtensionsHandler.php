@@ -1,6 +1,6 @@
 <?php
 
-namespace Arzola\ExtraPhpExtensions;
+namespace App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Handlers;
 
 use App\Models\Service;
 use Illuminate\Support\Facades\Artisan;
@@ -15,10 +15,10 @@ class ExtraExtensionsHandler
         });
         Event::listen('service.uninstalled', function (Service $service) {
             $availableExtensions = $service->type_data['available_extensions'] ?? [];
-            if (!empty($availableExtensions)) {
+            if (! empty($availableExtensions)) {
                 $service->server->ssh()->exec(
-                    'sudo apt-get remove -y ' . implode(' ', array_map(
-                        fn($ext) => "php{$service->version}-{$ext}",
+                    'sudo apt-get remove -y '.implode(' ', array_map(
+                        fn ($ext) => "php{$service->version}-{$ext}",
                         $availableExtensions
                     )),
                     "php-extra-extensions-{$service->version}-uninstall-log"
