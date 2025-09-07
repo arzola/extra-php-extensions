@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Commands;
+namespace App\Vito\Plugins\Arzola\ExtraPhpExtensions\Commands;
 
 use App\Exceptions\SSHError;
 use App\Models\Service;
-use App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Actions\FetchExtensions;
+use App\Vito\Plugins\Arzola\ExtraPhpExtensions\Actions\FetchExtensions;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Actions;
+namespace App\Vito\Plugins\Arzola\ExtraPhpExtensions\Actions;
 
 use App\Models\Service;
 

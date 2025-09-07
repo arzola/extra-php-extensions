@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Commands;
+namespace App\Vito\Plugins\Arzola\ExtraPhpExtensions\Commands;
 
 use App\Exceptions\SSHError;
 use App\Models\Service;

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions;
+namespace App\Vito\Plugins\Arzola\ExtraPhpExtensions;
 
 use App\Models\Service;
 use App\Plugins\AbstractPlugin;
 use App\Plugins\RegisterCommand;
-use App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Actions\FetchExtensions;
-use App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Commands\FetchCommand;
-use App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Commands\UninstallCommand;
-use App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Handlers\ExtraExtensionsHandler;
+use App\Vito\Plugins\Arzola\ExtraPhpExtensions\Actions\FetchExtensions;
+use App\Vito\Plugins\Arzola\ExtraPhpExtensions\Commands\FetchCommand;
+use App\Vito\Plugins\Arzola\ExtraPhpExtensions\Commands\UninstallCommand;
+use App\Vito\Plugins\Arzola\ExtraPhpExtensions\Handlers\ExtraExtensionsHandler;
 
 class Plugin extends AbstractPlugin
 {

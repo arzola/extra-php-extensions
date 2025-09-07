@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Vito\Plugins\RichardAnderson\ExtraPhpExtensions\Handlers;
+namespace App\Vito\Plugins\Arzola\ExtraPhpExtensions\Handlers;
 
 use App\Models\Service;
 use Illuminate\Support\Facades\Artisan;
