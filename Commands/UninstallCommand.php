@@ -1,6 +1,6 @@
 <?php
 
-namespace Arzola\ExtraPhpExtensions;
+namespace App\Vito\Plugins\Arzola\ExtraPhpExtensions\Commands;
 
 use App\Exceptions\SSHError;
 use App\Models\Service;
@@ -20,7 +20,8 @@ class UninstallCommand extends Command
      */
     public function handle(): void
     {
-        $this->getPhpServices()->each(function ($service) {
+        $data = Service::where('type', 'php');
+        $data->each(function ($service) {
             $typeData = $service->type_data ?? [];
             $availableExtraExtensions = $typeData['available_extensions'] ?? [];
             $installedExtensions = $typeData['extensions'] ?? [];
@@ -55,12 +56,5 @@ class UninstallCommand extends Command
                 echo "✗ Failed to uninstall extensions for service {$service->id}: {$e->getMessage()}\n";
             }
         });
-    }
-
-    private function getPhpServices(): Collection
-    {
-        $query = Service::where('type', 'php');
-
-        return $query->get();
     }
 }
