@@ -22,23 +22,11 @@ Install the plugin by running the following command in your Vito application:
 php artisan plugin:install https://github.com/arzola/extra-php-extensions.git
 ```
 
-### Post-install tasks
-
-The following tasks run automatically after installation via Composer scripts:
-
-```json
-{
-    "scripts": {
-        "post-package-install": [
-            "php artisan config:clear",
-            "php artisan cache:clear",
-            "php artisan php-extensions:fetch"
-        ]
-    }
-}
-```
-
 The plugin will be automatically loaded by the application.
+
+### Enabling the Plugin
+
+Once installed, enable the plugin from the Vito UI or CLI. On enable, it automatically fetches available extensions for all existing PHP services.
 
 ## Usage
 
@@ -64,30 +52,16 @@ On first fetch, the plugin takes a snapshot of already-installed extensions (`ex
 
 ## Uninstallation
 
-### Plugin Uninstallation
+### Disabling the Plugin
 
-When the plugin is uninstalled, it:
+When the plugin is disabled, it:
 
 1. Compares currently installed extensions against the initial snapshot
 2. Only removes extensions that were installed **after** the plugin was set up
-3. Cleans up all plugin-related data from `type_data`
+3. Cleans up all plugin-related data from `type_data` (`available_extensions`, `extensions_before_plugin`)
 
 ```bash
-php artisan plugin:uninstall arzola/extra-php-extensions
-```
-
-The following tasks run automatically before uninstallation via Composer scripts:
-
-```json
-{
-    "scripts": {
-        "pre-package-uninstall": [
-            "php artisan config:clear",
-            "php artisan cache:clear",
-            "php artisan php-extensions:uninstall"
-        ]
-    }
-}
+php artisan plugin:disable arzola/extra-php-extensions
 ```
 
 ### Service Uninstallation
