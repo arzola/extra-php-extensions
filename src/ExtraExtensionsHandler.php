@@ -14,12 +14,17 @@ class ExtraExtensionsHandler
             Artisan::call('php-extensions:fetch', ['service' => $service->id]);
         });
         Event::listen('service.uninstalled', function (Service $service) {
-            $availableExtensions = $service->type_data['available_extensions'] ?? [];
-            if (!empty($availableExtensions)) {
+            $typeData = $service->type_data ?? [];
+            $installedExtensions = $typeData['extensions'] ?? [];
+            $snapshotExtensions = $typeData['extensions_before_plugin'] ?? [];
+
+            $extensionsToUninstall = array_diff($installedExtensions, $snapshotExtensions);
+
+            if (!empty($extensionsToUninstall)) {
                 $service->server->ssh()->exec(
                     'sudo apt-get remove -y ' . implode(' ', array_map(
-                        fn($ext) => "php{$service->version}-{$ext}",
-                        $availableExtensions
+                        fn ($ext) => "php{$service->version}-{$ext}",
+                        $extensionsToUninstall
                     )),
                     "php-extra-extensions-{$service->version}-uninstall-log"
                 );

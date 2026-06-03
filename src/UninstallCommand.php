@@ -22,12 +22,13 @@ class UninstallCommand extends Command
     {
         $this->getPhpServices()->each(function ($service) {
             $typeData = $service->type_data ?? [];
-            $availableExtraExtensions = $typeData['available_extensions'] ?? [];
             $installedExtensions = $typeData['extensions'] ?? [];
+            $snapshotExtensions = $typeData['extensions_before_plugin'] ?? [];
 
-            $extensionsToUninstall = array_intersect($availableExtraExtensions, $installedExtensions);
+            $extensionsToUninstall = array_diff($installedExtensions, $snapshotExtensions);
 
-            unset($typeData['available_extensions']);
+            unset($typeData['available_extensions'], $typeData['extensions_before_plugin']);
+
             foreach ($extensionsToUninstall as $extension) {
                 $key = array_search($extension, $installedExtensions);
                 if ($key !== false) {
@@ -38,7 +39,7 @@ class UninstallCommand extends Command
             $service->type_data = $typeData;
             $service->save();
 
-            if (empty($extensions)) {
+            if (empty($extensionsToUninstall)) {
                 return;
             }
 

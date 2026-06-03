@@ -9,33 +9,36 @@ This plugin provides automatic discovery of available PHP extensions for your PH
 ## Features
 
 - **Automatic Extension Discovery**: Automatically fetches available PHP extensions when a PHP service is installed
-- **Command Line Interface**: Manual command to fetch extensions for specific services
+- **Safe Uninstall**: Only removes extensions installed through this plugin, preserving pre-existing extensions
+- **Command Line Interface**: Manual commands to fetch and uninstall extensions
 - **Event-Driven Architecture**: Responds to service lifecycle events
 - **Extension Storage**: Stores available extensions in the service's `type_data` field
 
 ## Installation
 
-1. Install the plugin running the following command in your vito application:
+Install the plugin by running the following command in your Vito application:
 
 ```bash
 php artisan plugin:install https://github.com/arzola/extra-php-extensions.git
 ```
 
-### Perform tasks after installation
+### Post-install tasks
 
-This plugin uses composer scripts to perform tasks after installation, it will be automatically executed after the plugin is installed.
+The following tasks run automatically after installation via Composer scripts:
 
 ```json
 {
     "scripts": {
         "post-package-install": [
-        "@php artisan php-extensions:fetch"
+            "php artisan config:clear",
+            "php artisan cache:clear",
+            "php artisan php-extensions:fetch"
         ]
     }
 }
-````
+```
 
-2. The plugin will be automatically loaded by the application
+The plugin will be automatically loaded by the application.
 
 ## Usage
 
@@ -54,24 +57,54 @@ php artisan php-extensions:fetch
 # Fetch extensions for a specific service
 php artisan php-extensions:fetch 123
 ```
+
+### Extension Tracking
+
+On first fetch, the plugin takes a snapshot of already-installed extensions (`extensions_before_plugin`). This snapshot is used during uninstall to determine which extensions were installed through the plugin, ensuring pre-existing extensions are never removed.
+
+## Uninstallation
+
 ### Plugin Uninstallation
 
-When the plugin is uninstalled, it will automatically remove the stored extensions from the services and clean up any related data.
+When the plugin is uninstalled, it:
 
-See uninstall.php for more details.
+1. Compares currently installed extensions against the initial snapshot
+2. Only removes extensions that were installed **after** the plugin was set up
+3. Cleans up all plugin-related data from `type_data`
 
-### Perform tasks after uninstallation
+```bash
+php artisan plugin:uninstall arzola/extra-php-extensions
+```
 
-This plugin uses composer scripts to perform tasks before uninstallation, it will be automatically executed before the plugin is uninstalled.
-
-So if your plugin has any tasks to perform before uninstallation, you can add them in the `composer.json` file of your plugin:
+The following tasks run automatically before uninstallation via Composer scripts:
 
 ```json
 {
     "scripts": {
         "pre-package-uninstall": [
-        "@php uninstall.php"
+            "php artisan config:clear",
+            "php artisan cache:clear",
+            "php artisan php-extensions:uninstall"
         ]
     }
 }
-````
+```
+
+### Service Uninstallation
+
+When a PHP service is uninstalled from a server, the plugin also cleans up any extensions that were installed through it, using the same snapshot-based comparison to protect pre-existing extensions.
+
+## Events
+
+| Event | Description |
+|---|---|
+| `service.installed` | Triggers `php-extensions:fetch` for the new service |
+| `service.uninstalled` | Removes only plugin-installed extensions via `apt-get remove` |
+| `php.extensions.list` | Enriches the extensions list with plugin-discovered available extensions |
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `php artisan php-extensions:fetch [service]` | Fetch available extensions for all or a specific PHP service |
+| `php artisan php-extensions:uninstall` | Remove plugin-installed extensions and clean up metadata |
