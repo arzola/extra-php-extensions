@@ -25,6 +25,10 @@ class FetchExtensions
             $typeData = $php->type_data ?? [];
             $typeData['available_extensions'] = array_values($notInstalledExtensions);
 
+            if (!isset($typeData['extensions_before_plugin'])) {
+                $typeData['extensions_before_plugin'] = $installedList;
+            }
+
             $php->update(['type_data' => $typeData]);
 
             return "Updated {$php->id} with ".count($notInstalledExtensions).' available extensions (excluding '.count($installedList).' already installed)';
